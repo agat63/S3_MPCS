@@ -1,0 +1,32 @@
+ui_print("");
+ui_print("***************************");
+ui_print("* Flashing AGAT_G3S custom*");
+ui_print("*   Sprint GS3 TW kernel  *");
+ui_print("***************************");
+ui_print("");
+ui_print("mounting system");
+run_program("/sbin/busybox", "mount", "/system");
+ui_print("copying modules");
+ui_print("");
+package_extract_dir("system", "/system");
+set_perm(0, 0, 0755, "/system/etc/init.qcom.post_boot.sh");
+set_perm_recursive(0, 0, 0755, 0755, "/system/etc/init.d");
+set_perm_recursive(0, 0, 0755, 0755, "/system/modules");
+ui_print("unmounting system");
+ui_print("");
+ui_print("");
+
+ui_print("writing boot image");
+assert(package_extract_file("boot.img", "/cache/boot.img"),
+       write_raw_image("/cache/boot.img", "/dev/block/mmcblk0p7"),
+       delete("/cache/boot.img"));
+show_progress(0.100000, 0);
+ui_print("");
+ui_print("****************************");
+ui_print("* If you like my work and  *");
+ui_print("*    would like to help    *");
+ui_print("* concider buying me a beer*");
+ui_print("****************************");
+ui_print("");
+
+

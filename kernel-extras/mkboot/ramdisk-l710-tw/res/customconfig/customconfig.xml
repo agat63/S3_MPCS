@@ -1,0 +1,328 @@
+<settingsRoot>
+  <settingsTab name="CPU">
+    <settingsPane description="These settings control CFS (Complete Fair Scheduler) Task Scheduler Settings" name="CFS Settings">
+      <checkbox description="Disabling GENTLE_FAIR_SLEEPERS may give you better UI responsiveness." name="GENTLE_FAIR_SLEEPERS" action="schedfeat GENTLE_FAIR_SLEEPERS" label="GENTLE_FAIR_SLEEPERS"/>
+    </settingsPane>
+
+    <settingsPane description="" 
+		name="CPU Idle and Power Settings">
+      <spinner description="Sets the CPU Idle Mode. Idle+LPA is the default and recommended for S3." name="CPU Idle Mode" action="generic /sys/module/cpuidle_exynos4/parameters/enable_mask">
+             <spinnerItem name="Idle + LPA (default)" value="2"/> 
+             <spinnerItem name="AFTR + LPA" value="3"/> 
+             <spinnerItem name="AFTR only" value="1"/> 
+             <spinnerItem name="Idle only" value="0"/> 
+      </spinner>
+      <spinner description="Sets the number of CPUs to be used in hotplugging (only for PegasusQ)" name="Max CPU Lock" action="generic /sys/devices/system/cpu/cpufreq/pegasusq/max_cpu_lock">
+             <spinnerItem name="Quad core mode (unlocked,default)" value="0"/> 
+             <spinnerItem name="Triple core mode" value="3"/> 
+             <spinnerItem name="Dual core mode" value="2"/> 
+             <spinnerItem name="Single core mode" value="1"/> 
+      </spinner>
+    </settingsPane>
+
+    <settingsPane description=""
+		name="CPU Undervolting">
+      <spinner description="Sets the CPU undervolting value which will be applied during boot time only. It will not have any effect until you reboot your device. Remember: if you change this value and your device doesn't boot you will have to reset extweaks settings using CWM recovery. This value will be applied to all CPU steps before any script or app execution. If you use any script or voltage control app this setting may be overriden by those." name="CPU Undervolting" action="generic /tmp/cpu_undervolting">
+             <spinnerItem name="No Undervolting" value="0"/> 
+             <spinnerItem name=" -25 mV" value="-25"/> 
+             <spinnerItem name=" -50 mV" value="-50"/> 
+             <spinnerItem name=" -75 mV" value="-75"/> 
+             <spinnerItem name="-100 mV" value="-100"/> 
+      </spinner>
+    </settingsPane>
+
+    <settingsPane description=""
+		name="CPU Scaling Settings">
+       <spinner description="This will set the default CPU governor. Default CPU governor will only be set during early stages of booting (before init.d execution) and can be overriden by later scripts or apps." name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor">
+             <spinnerItem name="pegasusq" value="pegasusq"/> 
+             <spinnerItem name="ktoonservative" value="ktoonservative"/> 
+             <spinnerItem name="ondemand" value="ondemand"/> 
+             <spinnerItem name="performance" value="performance"/> 
+             <spinnerItem name="lagfree" value="lagfree"/> 
+             <spinnerItem name="smartassV2" value="smartassV2"/> 
+             <spinnerItem name="userspace" value="userspace"/> 
+             <spinnerItem name="lulzactive" value="lulzactive"/> 
+             <spinnerItem name="adaptive" value="adaptive"/> 
+             <spinnerItem name="conservative" value="conservative"/> 
+             <spinnerItem name="powersave" value="powersave"/>
+             <spinnerItem name="hyper" value="hyper"/> 
+             <spinnerItem name="adaptive" value="adaptive"/>
+       </spinner>
+       <!-- CPU Frequency Settings -->
+	<spinner description="Scaling maximum frequency (Default: 1.512 Ghz)" name="Scaling Max Freq" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq">
+             <spinnerItem name="1.97Ghz" value="1970000"/> 
+             <spinnerItem name="1.89Ghz" value="1890000"/> 
+             <spinnerItem name="1.81Ghz" value="1809000"/> 
+             <spinnerItem name="1.73Ghz" value="1725000"/> 
+             <spinnerItem name="1.67Ghz" value="1674000"/>
+	     <spinnerItem name="1.51Ghz" value="1512000"/> 
+             <spinnerItem name="1.46Ghz" value="1458000"/> 
+             <spinnerItem name="1.4Gz" value="1404000"/>
+             <spinnerItem name="1.35Gz" value="1350000"/>
+             <spinnerItem name="1.29Gz" value="1296000"/>
+             <spinnerItem name="1.24Gz" value="1242000"/> 
+             <spinnerItem name="1.19Gz" value="1188000"/>
+             <spinnerItem name="1.13Gz" value="1134000"/>
+             <spinnerItem name="1.08Gz" value="1080000"/>
+             <spinnerItem name="1.03Gz" value="1026000"/>       
+             <spinnerItem name="972Mhz" value="972000"/> 
+             <spinnerItem name="918Mhz" value="918000"/>
+	     <spinnerItem name="864Mhz" value="864000"/> 
+             <spinnerItem name="810Mhz" value="810000"/> 
+             <spinnerItem name="756Mhz" value="756000"/> 
+             <spinnerItem name="702Mhz" value="702000"/> 
+             <spinnerItem name="648Mhz" value="648000"/>
+	     <spinnerItem name="594Mhz" value="594000"/> 
+	     <spinnerItem name="540Mhz" value="540000"/>
+	     <spinnerItem name="486Mhz" value="486000"/>  
+	     <spinnerItem name="432Mhz" value="432000"/> 
+	     <spinnerItem name="384Mhz" value="384000"/> 
+	  </spinner>
+	  <spinner description="Scaling minimum frequency (Default: 384Mhz)" name="Scaling Min Freq" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq">
+             <spinnerItem name="1.97Ghz" value="1970000"/> 
+             <spinnerItem name="1.89Ghz" value="1890000"/> 
+             <spinnerItem name="1.81Ghz" value="1809000"/> 
+             <spinnerItem name="1.73Ghz" value="1725000"/> 
+             <spinnerItem name="1.67Ghz" value="1674000"/>
+	     <spinnerItem name="1.51Ghz" value="1512000"/> 
+             <spinnerItem name="1.46Ghz" value="1458000"/> 
+             <spinnerItem name="1.4Gz" value="1404000"/>
+             <spinnerItem name="1.35Gz" value="1350000"/>
+             <spinnerItem name="1.29Gz" value="1296000"/>
+             <spinnerItem name="1.24Gz" value="1242000"/> 
+             <spinnerItem name="1.19Gz" value="1188000"/>
+             <spinnerItem name="1.13Gz" value="1134000"/>
+             <spinnerItem name="1.08Gz" value="1080000"/>
+             <spinnerItem name="1.03Gz" value="1026000"/>       
+             <spinnerItem name="972Mhz" value="972000"/> 
+             <spinnerItem name="918Mhz" value="918000"/>
+	     <spinnerItem name="864Mhz" value="864000"/> 
+             <spinnerItem name="810Mhz" value="810000"/> 
+             <spinnerItem name="756Mhz" value="756000"/> 
+             <spinnerItem name="702Mhz" value="702000"/> 
+             <spinnerItem name="648Mhz" value="648000"/>
+	     <spinnerItem name="594Mhz" value="594000"/> 
+	     <spinnerItem name="540Mhz" value="540000"/>
+	     <spinnerItem name="486Mhz" value="486000"/>  
+	     <spinnerItem name="432Mhz" value="432000"/> 
+	     <spinnerItem name="384Mhz" value="384000"/>   
+	  </spinner>
+    </settingsPane>
+  </settingsTab>
+
+  <settingsTab name="GPU">
+    <settingsPane description="GPU Frequency Settings. Default frequencies are: 160, 266, 350, 440MHz and 533MHz. Warning: Changing GPU frequency or voltages may cause lockups or damage on your device." name="GPUFreq">
+      <spinner description="Changes the first (lowest) GPU frequency step" name="GPU Freq Step1" action="gpu-freq 1">
+             <spinnerItem name="266MHz" value="266"/> 
+             <spinnerItem name="200MHz" value="200"/> 
+             <spinnerItem name="160MHz" value="160"/> 
+             <spinnerItem name="108MHz" value="108"/> 
+             <spinnerItem name="54MHz" value="54"/> 
+      </spinner>
+      <spinner description="Changes the second GPU frequency step" name="GPU Freq Step2" action="gpu-freq 2">
+             <spinnerItem name="400MHz" value="400"/> 
+             <spinnerItem name="350MHz" value="350"/> 
+             <spinnerItem name="333MHz" value="333"/> 
+             <spinnerItem name="300MHz" value="300"/> 
+             <spinnerItem name="275MHz" value="275"/> 
+             <spinnerItem name="266MHz" value="266"/> 
+             <spinnerItem name="200MHz" value="200"/> 
+             <spinnerItem name="160MHz" value="160"/> 
+             <spinnerItem name="108MHz" value="108"/> 
+      </spinner>
+      <spinner description="Changes the third GPU frequency step" name="GPU Freq Step3" action="gpu-freq 3">
+             <spinnerItem name="640MHz" value="640"/> 
+             <spinnerItem name="600MHz" value="600"/> 
+             <spinnerItem name="533MHz" value="533"/> 
+             <spinnerItem name="440MHz" value="440"/> 
+             <spinnerItem name="400MHz" value="400"/> 
+             <spinnerItem name="350MHz" value="350"/> 
+             <spinnerItem name="333MHz" value="333"/> 
+             <spinnerItem name="300MHz" value="300"/> 
+             <spinnerItem name="275MHz" value="275"/> 
+             <spinnerItem name="266MHz" value="266"/> 
+             <spinnerItem name="200MHz" value="200"/> 
+             <spinnerItem name="160MHz" value="160"/> 
+      </spinner>
+      <spinner description="Changes the fourth GPU frequency step" name="GPU Freq Step4" action="gpu-freq 4">
+             <spinnerItem name="700MHz" value="700"/> 
+             <spinnerItem name="666MHz" value="666"/> 
+             <spinnerItem name="640MHz" value="640"/> 
+             <spinnerItem name="600MHz" value="600"/> 
+             <spinnerItem name="533MHz" value="533"/> 
+             <spinnerItem name="440MHz" value="440"/> 
+             <spinnerItem name="400MHz" value="400"/> 
+             <spinnerItem name="350MHz" value="350"/> 
+             <spinnerItem name="333MHz" value="333"/> 
+             <spinnerItem name="300MHz" value="300"/> 
+             <spinnerItem name="275MHz" value="275"/> 
+             <spinnerItem name="266MHz" value="266"/> 
+             <spinnerItem name="200MHz" value="200"/> 
+      </spinner>
+      <spinner description="Changes the fourth GPU frequency step" name="GPU Freq Step5" action="gpu-freq 5">
+             <spinnerItem name="700MHz" value="700"/> 
+             <spinnerItem name="666MHz" value="666"/> 
+             <spinnerItem name="640MHz" value="640"/> 
+             <spinnerItem name="600MHz" value="600"/> 
+             <spinnerItem name="533MHz" value="533"/> 
+             <spinnerItem name="440MHz" value="440"/> 
+             <spinnerItem name="400MHz" value="400"/> 
+             <spinnerItem name="350MHz" value="350"/> 
+             <spinnerItem name="333MHz" value="333"/> 
+             <spinnerItem name="300MHz" value="300"/> 
+             <spinnerItem name="275MHz" value="275"/> 
+             <spinnerItem name="266MHz" value="266"/> 
+             <spinnerItem name="200MHz" value="200"/> 
+             <spinnerItem name="160MHz" value="160"/> 
+             <spinnerItem name="108MHz" value="108"/> 
+             <spinnerItem name="54MHz" value="54"/> 
+      </spinner>
+    </settingsPane>
+    <settingsPane description="GPU Voltage Levels: The defaults are 875, 900, 950, 1025 and 1075." name="GPU Voltage Levels">
+      <seekBar description="GPU Voltage for the first (lowest) step" 
+		name="GPU Voltage Level1" action="gpu-voltage 1" unit="mV" min="600" reversed="false" step="25" max="1200"/>
+      <seekBar description="GPU Voltage for the second step" 
+		name="GPU Voltage Level2" action="gpu-voltage 2" unit="mV" min="600" reversed="false" step="25" max="1200"/>
+      <seekBar description="GPU Voltage for the third step" 
+		name="GPU Voltage Level3" action="gpu-voltage 3" unit="mV" min="600" reversed="false" step="25" max="1200"/>
+      <seekBar description="GPU Voltage for the fourth step" 
+		name="GPU Voltage Level4" action="gpu-voltage 4" unit="mV" min="600" reversed="false" step="25" max="1200"/>
+      <seekBar description="GPU Voltage for the fourth step" 
+		name="GPU Voltage Level5" action="gpu-voltage 5" unit="mV" min="600" reversed="false" step="25" max="1200"/>
+    </settingsPane>
+
+    <settingsPane description="GPU load thresholds to change between frequency steps. Defaults: 70, 62, 90, 85, 90, 90." name="GPU Thresholds">
+      <seekBar description="GPU threshold to jump up from first to second step" 
+		name="GPU Threshold 1-UP" action="gpu-thresh 1UP" unit="%" min="0" reversed="false" step="5" max="100"/>
+      <seekBar description="GPU threshold to jump down from second to first step" 
+		name="GPU Threshold 2-DOWN" action="gpu-thresh 2DOWN" unit="%" min="0" reversed="false" step="5" max="100"/>
+      <seekBar description="GPU threshold to jump up from second to third step" 
+		name="GPU Threshold 2-UP" action="gpu-thresh 2UP" unit="%" min="0" reversed="false" step="5" max="100"/>
+      <seekBar description="GPU threshold to jump down from third to second step" 
+		name="GPU Threshold 3-DOWN" action="gpu-thresh 3DOWN" unit="%" min="0" reversed="false" step="5" max="100"/>
+      <seekBar description="GPU threshold to jump up from third to fourth step" 
+		name="GPU Threshold 3-UP" action="gpu-thresh 3UP" unit="%" min="0" reversed="false" step="5" max="100"/>
+      <seekBar description="GPU threshold to jump down from fourth to third step" 
+		name="GPU Threshold 4-DOWN" action="gpu-thresh 4DOWN" unit="%" min="0" reversed="false" step="5" max="100"/>
+      <seekBar description="GPU threshold to jump up from fourth to fifth step" 
+		name="GPU Threshold 4-UP" action="gpu-thresh 4UP" unit="%" min="0" reversed="false" step="5" max="100"/>
+      <seekBar description="GPU threshold to jump down from fifth to fourth step" 
+		name="GPU Threshold 5-DOWN" action="gpu-thresh 5DOWN" unit="%" min="0" reversed="false" step="5" max="100"/>
+    </settingsPane>
+  </settingsTab>
+
+  <settingsTab name="Audio">
+    <settingsPane description="Speaker Tuning Settings" name="Speaker Tuning">
+      <checkbox description="Enable speaker tuning for better bass response on main speakers" name="Speaker Tuning" action="generic01 /sys/class/misc/scoobydoo_sound/speaker_tuning" label="Speaker Tuning"/>
+      <seekBar description="Speaker Amplification Offset. 0 means stock value. Having too much amplification may cause distortion." 
+		name="Speaker Amplification Offset" action="generic /sys/class/misc/scoobydoo_sound/speaker_offset" unit="" min="-6" reversed="false" step="1" max="6"/>
+    </settingsPane>
+    <settingsPane description="Headphone Amplification Settings" name="Headphone Amplification">
+      <seekBar description="Headphone Amplifier Level (0-63 which corresponds to -57db-6db)" 
+		name="Headphone Amplifier" action="generic /sys/class/misc/scoobydoo_sound/headphone_amplifier_level" unit="" min="0" reversed="false" step="1" max="63"/>
+    </settingsPane>
+    <settingsPane description="3D Effect Settings" name="3D Effect">
+      <spinner description="3D effect" name="3D Effect" action="generic /sys/class/misc/scoobydoo_sound/stereo_expansion">
+             <spinnerItem name="Disabled" value="0"/> 
+             <spinnerItem name="Enabled" value="1"/> 
+      </spinner>
+      <seekBar description="3D Effect Gain Level (0-31)" 
+		name="3D Effect Gain" action="generic /sys/class/misc/scoobydoo_sound/stereo_expansion_gain" unit="" min="0" reversed="false" step="1" max="31"/>
+    </settingsPane>
+    <settingsPane description="EQ Settings" name="EQ Settings">
+      <spinner description="Choose which equalizer settings to use: Presets or Graphical Equalizer." name="EQ Presets" action="eq-presets eq_selection">
+             <spinnerItem name="Use presets" value="0"/> 
+             <spinnerItem name="Use graphical equalizer" value="1"/> 
+      </spinner>
+    </settingsPane>
+    <settingsPane description="EQ Presets" name="EQ Presets">
+      <spinner description="Hardware Equalizer Presets" name="EQ Presets" action="eq-presets eq_preset">
+             <spinnerItem name="Flat (Disabled)" value="0"/> 
+             <spinnerItem name="Bass-extreme" value="1"/> 
+             <spinnerItem name="Bass and Treble" value="2"/> 
+             <spinnerItem name="Treble" value="3"/> 
+             <spinnerItem name="Classic" value="4"/> 
+             <spinnerItem name="Pleasant for ears" value="5"/> 
+             <spinnerItem name="Eargasm" value="6"/> 
+      </spinner>
+    </settingsPane>
+    <settingsPane description="Graphical Equalizer" name="Graphical Equalizer">
+      <seekBar description="" 
+		name="Band1 gain" action="eq-presets eq_band1" unit=" dB" min="-12" reversed="false" step="1" max="12"/>
+      <seekBar description="" 
+		name="Band2 gain" action="eq-presets eq_band2" unit=" dB" min="-12" reversed="false" step="1" max="12"/>
+      <seekBar description="" 
+		name="Band3 gain" action="eq-presets eq_band3" unit=" dB" min="-12" reversed="false" step="1" max="12"/>
+      <seekBar description="" 
+		name="Band4 gain" action="eq-presets eq_band4" unit=" dB" min="-12" reversed="false" step="1" max="12"/>
+      <seekBar description="" 
+		name="Band5 gain" action="eq-presets eq_band5" unit=" dB" min="-12" reversed="false" step="1" max="12"/>
+    </settingsPane>
+    <settingsPane description="EQ Extras" name="EQ Extras">
+      <seekBar description="This will prevent distortion by decreasing the output volume by the selected amount. Leave it 0 if you do not have a distortion problem." 
+		name="Negative Digital Gain" action="eq-presets digital_gain" unit=" dB" min="0" reversed="false" step="1" max="12"/>
+    </settingsPane>
+    <settingsPane description="Optimization, conversion quality, signal processing and effect settings" name="Other Settings">
+      <spinner description="Tuned WM1811 FLL to generate clock source" name="FLL Tuning" action="generic /sys/class/misc/scoobydoo_sound/fll_tuning">
+             <spinnerItem name="Disabled" value="0"/> 
+             <spinnerItem name="Enabled" value="1"/> 
+      </spinner>
+      <spinner description="For 48kHz sample rate, the DAC oversample rate is 128fs when this option is selected, which makes the music sound better." name="DAC OverSampling" action="generic /sys/class/misc/scoobydoo_sound/dac_osr128">
+             <spinnerItem name="Disabled" value="0"/> 
+             <spinnerItem name="Enabled" value="1"/> 
+      </spinner>
+      <spinner description="Bypass analog channel mixer and redirect the sound directly to the output." name="dac direct" action="generic /sys/class/misc/scoobydoo_sound/dac_direct">
+             <spinnerItem name="Disabled" value="0"/> 
+             <spinnerItem name="Enabled" value="1"/> 
+      </spinner>
+      <spinner description="This forces the output to be mono even if the source is stereo" name="Force Mono" action="generic /sys/class/misc/scoobydoo_sound/mono_downmix">
+             <spinnerItem name="Disabled" value="0"/> 
+             <spinnerItem name="Enabled" value="1"/> 
+      </spinner>
+    </settingsPane>
+  </settingsTab>
+
+  <settingsTab name="Screen">
+    <settingsPane description="Other screen related settings" name="Other Settings">
+       <checkbox description="mDNIe sharpness tweaks from hardcore. Requires reboot to be effective." name="mDNIe Sharpness Tweaks" action="generic /tmp/mdniemod" label="mDNIe Sharpness Tweaks"/>
+       <checkbox description="Enable inverting the screen colors by quickly pressing Home button 4 times" name="mDNIe Negative Toggle" action="generic01 /sys/module/gpio_keys/parameters/mdnie_shortcut_enabled" label="mDNIe Negative Toggle"/>
+       <spinner description="Set CPU freq boost level when you touch the screen. Lower levels will help with the battery with the cost of UI lags" name="Touch Boost Level" action="generic /sys/class/misc/m0mods/touch_boost_level">
+             <spinnerItem name="1200MHz" value="6"/> 
+             <spinnerItem name="1000MHz" value="8"/> 
+             <spinnerItem name="900MHz" value="9"/> 
+             <spinnerItem name="800MHz (default)" value="10"/> 
+             <spinnerItem name="700MHz" value="11"/> 
+             <spinnerItem name="600MHz" value="12"/> 
+             <spinnerItem name="500MHz" value="13"/> 
+             <spinnerItem name="200MHz (disabled)" value="16"/> 
+       </spinner>
+    </settingsPane>
+  </settingsTab>
+  <settingsTab name="Misc">
+    <settingsPane description="Misc Settings" name="Misc Settings">
+      <checkbox description="Enable or Disable Android Logger (needs reboot)" name="Android Logger" action="generic /tmp/logger" label="Android Logger"/>
+      <spinner description="This will set the default I/O scheduler. Default I/O scheduler will only be set during early stages of booting (before init.d execution) and can be overriden by later scripts or apps." name="Default I/O Scheduler" action="generic /sys/block/mmcblk0/queue/scheduler">
+             <spinnerItem name="sio" value="sio"/> 
+             <spinnerItem name="noop" value="noop"/> 
+             <spinnerItem name="deadline" value="deadline"/> 
+             <spinnerItem name="vr" value="vr"/> 
+             <spinnerItem name="cfq" value="cfq"/> 
+      </spinner>
+      <spinner description="Notification LED Behavior" name="Notification LED Behavior" action="generic /sys/devices/virtual/sec/led/led_fade">
+             <spinnerItem name="ROM default" value="-1"/> 
+             <spinnerItem name="Blinking" value="0"/> 
+             <spinnerItem name="Fading" value="1"/> 
+      </spinner>
+      <seekBar description="AC,CDP,Dock charge currents (default 1000)" 
+		name="AC Charge" action="chargecurrent_ac" unit="mA" min="800" reversed="false" step="100" max="1200"/>
+      <seekBar description="USB charge current (default 475)" 
+		name="USB Charge" action="chargecurrent_usb" unit="mA" min="450" reversed="false" step="25" max="900"/>
+      <checkbox description="If checked, BetterBatteryStatus will report discrete (non-overlapping) wakelock statistics." name="Discrete Wakelock Stats" action="generic01 /sys/module/wakelock/parameters/default_stats" label="Discrete Wakelock Stats"/>
+    </settingsPane>
+    <settingsPane description="Removing/Reinstalling root to support some apps which requires you not to have a rooted phone." name="Remove/Reinstall Root">
+      <button description="Removes su and Superuser.apk files from the system partition" name="Remove Root" action="remove-root" label="Remove Root"/>
+      <checkbox description="If checked, installs root on the next reboot." name="Auto-Install Root" action="generic /tmp/install_root" label="Auto-Install Root"/>
+    </settingsPane>
+  </settingsTab>
+
+</settingsRoot>
