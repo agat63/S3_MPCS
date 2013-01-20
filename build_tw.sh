@@ -23,7 +23,7 @@ cp -r kernel-extras/mkboot $pwd
 cp -r kernel-extras/zip $pwd
 
 # Build entire kernel and create build log
-make m2_mpcs_defconfig
+make agat_mpcs_defconfig
 make headers_install
 # make modules
 time make -j8 CC="ccache $pwd/kernel-extras/arm-eabi-4.4.3/bin/arm-eabi-gcc" 2>&1 | tee ~/logs/$version.txt

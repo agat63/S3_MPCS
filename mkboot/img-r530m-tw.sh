@@ -2,8 +2,8 @@
 
 export	pwd=`readlink -f .`
 echo "making ramdisk"
-# ./mkbootfs ramdisk-l710-jb | gzip > ramdisk.gz
-cd ramdisk-l710-jb
+# ./mkbootfs ramdisk-r530m-tw | gzip > ramdisk.gz
+cd ramdisk-r530m-tw
 find .|cpio -o -H newc > ../ramdisk
 cd ..
 gzip ramdisk
