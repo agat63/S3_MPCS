@@ -35,6 +35,7 @@ modules.builtin
 *.gcno
 *.tar
 *.zip
+*.rej
 
 #
 # Top-level generic files
