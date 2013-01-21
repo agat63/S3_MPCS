@@ -56,7 +56,7 @@ echo "Build log is avalable in ~/logs"
 echo "Cleaning kernel directory"
 # Clean up kernel tree
 cd $pwd
-# rm -rf mkboot 
+rm -rf mkboot 
 rm -rf zip
 echo "Done"
 
