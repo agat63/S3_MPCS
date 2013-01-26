@@ -1389,13 +1389,6 @@ static void fsa9485_usb_cdp_cb(bool attached)
 	set_cable_status =
 		attached ? CABLE_TYPE_CDP : CABLE_TYPE_NONE;
 
-	if (system_rev >= 0x4) {
-		if (attached) {
-			pr_info("%s set vbus state\n", __func__);
-			msm_otg_set_vbus_state(attached);
-		}
-	}
-
 	for (i = 0; i < 10; i++) {
 		psy = power_supply_get_by_name("battery");
 		if (psy)
@@ -1728,7 +1721,6 @@ static struct sec_bat_platform_data sec_bat_pdata = {
 	.check_batt_type = check_battery_type,
 	.iterm = 150,
 	.charge_duration = 6 * 60 * 60,
-	.wpc_charge_duration = 8 * 60 * 60,
 	.recharge_duration = 1.5 * 60 * 60,
 	.max_voltage = 4350 * 1000,
 	.recharge_voltage = 4280 * 1000,

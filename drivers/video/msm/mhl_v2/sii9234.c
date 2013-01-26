@@ -2006,10 +2006,10 @@ unhandled:
 	pr_info("sii9234: Detection failed");
 	if (sii9234->state == STATE_DISCONNECTED) {
 		pr_cont(" (timeout)");
-		mutex_unlock(&sii9234->lock);
 #ifndef CONFIG_MHL_D3_SUPPORT
-		mhl_onoff_ex(0);
+		sii9234->pdata->power_state = 0;
 #endif
+		mutex_unlock(&sii9234->lock);
 		return handled;
 	} else if (sii9234->state == STATE_DISCOVERY_FAILED)
 		pr_cont(" (discovery failed)");
@@ -2948,7 +2948,6 @@ static int __devinit sii9234_mhl_tx_i2c_probe(struct i2c_client *client,
 		printk(KERN_ERR
 		       "[ERROR] %s() workqueue create fail\n", __func__);
 		ret = -ENOMEM;
-		goto err_class;
 	}
 	INIT_WORK(&sii9234->msc_work, sii9234_process_msc_work);
 #endif

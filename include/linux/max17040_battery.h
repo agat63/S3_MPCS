@@ -43,9 +43,9 @@ struct max17040_platform_data {
 #define EMPTY_COND_SOC		100
 #define EMPTY_SOC		30
 #define FULL_SOC_DEFAULT	9860
-#define FULL_SOC_LOW		9760
-#define FULL_SOC_HIGH		10000
-#define FULL_KEEP_SOC		50
+#define FULL_SOC_LOW		9300
+#define FULL_SOC_HIGH		9650
+#define FULL_KEEP_SOC		0
 #define RCOMP0_TEMP	20 /* 'C */
 #else
 #define EMPTY_COND_SOC		100
@@ -53,7 +53,7 @@ struct max17040_platform_data {
 #define FULL_SOC_DEFAULT	9400
 #define FULL_SOC_LOW		9300
 #define FULL_SOC_HIGH		9650
-#define FULL_KEEP_SOC		50
+#define FULL_KEEP_SOC		0
 #define RCOMP0_TEMP	20 /* 'C */
 #endif
 

@@ -213,6 +213,7 @@ xprt_rdma_connect_worker(struct work_struct *work)
 
 out:
 	xprt_wake_pending_tasks(xprt, rc);
+
 out_clear:
 	dprintk("RPC:       %s: exit\n", __func__);
 	xprt_clear_connecting(xprt);

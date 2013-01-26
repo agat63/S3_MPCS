@@ -332,8 +332,7 @@ static struct msm_gpiomux_config msm8960_sec_ts_configs[] = {
 };
 
 
-//#define MSM_PMEM_ADSP_SIZE         0x4100000 /* 65 Mbytes */
-#define MSM_PMEM_ADSP_SIZE         0x5100000 /* 81 Mbytes */
+#define MSM_PMEM_ADSP_SIZE         0x4100000 /* 65 Mbytes */
 #define MSM_PMEM_AUDIO_SIZE        0x160000 /* 1.375 Mbytes */
 #define MSM_PMEM_SIZE 0x2800000 /* 40 Mbytes */
 #define MSM_LIQUID_PMEM_SIZE 0x4000000 /* 64 Mbytes */

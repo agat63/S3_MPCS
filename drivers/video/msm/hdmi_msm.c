@@ -764,7 +764,7 @@ void hdmi_hdcp_reg_dump(void)
 		printk("HDMI_REG[0x%04x]:[0x%08x],[0x%08x],[0x%08x],[0x%08x]\n",
 				i,HDMI_INP(i+0x0),HDMI_INP(i+0x4),
 					HDMI_INP(i+0x8), HDMI_INP(i+0xC));
-		i += 0x10;
+		i +=0xF;
 	}
 }
 
@@ -871,10 +871,7 @@ static void hdmi_msm_hpd_state_work(struct work_struct *work)
 			hdmi_msm_state->hpd_on_offline = TRUE;
 			kobject_uevent(external_common_state->uevent_kobj,
 				KOBJ_ONLINE);
-			if (hdmi_msm_is_dvi_mode())
-				mod_timer(&hdmi_msm_state->hdcp_timer, jiffies + HZ/2);
-			else
-				hdmi_msm_hdcp_enable();
+			hdmi_msm_hdcp_enable();
 #ifndef CONFIG_FB_MSM_HDMI_MSM_PANEL_HDCP_SUPPORT
 			/* Send Audio for HDMI Compliance Cases*/
 			envp[0] = "HDCP_STATE=PASS";
@@ -2566,7 +2563,6 @@ static int hdcp_authentication_part1(void)
 				__func__, __LINE__,
 			(HDMI_INP_ND(0x011C) & BIT(8)) >> 8,
 			(HDMI_INP_ND(0x011C) & BIT(9)) >> 9);
-			mutex_unlock(&hdcp_auth_state_mutex);
 			goto error;
 		}
 
@@ -2574,7 +2570,7 @@ static int hdcp_authentication_part1(void)
 		 * A small delay is needed here to avoid device crash observed
 		 * during reauthentication in MSM8960
 		 */
-		msleep(35);
+		msleep(25);
 
 		/* 0x0168 HDCP_RCVPORT_DATA12
 		   [23:8] BSTATUS
@@ -4689,10 +4685,8 @@ static int __init hdmi_msm_init(void)
 	 * allocs and returns ptr
 	*/
 	hdmi_work_queue = create_workqueue("hdmi_hdcp");
-	if (!hdmi_work_queue) {
-		rc = -ENOMEM;
+	if (!hdmi_work_queue)
 		goto init_exit;
-	}
 	external_common_state->hpd_feature = hdmi_msm_hpd_feature;
 
 	rc = platform_driver_register(&this_driver);

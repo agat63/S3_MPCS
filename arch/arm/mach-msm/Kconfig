@@ -753,16 +753,6 @@ config MACH_MSM8960_LIQUID
 	help
 	  Support for the Qualcomm MSM8960 LIQUID device.
 
-config DMUX_LA1_5
-	depends on ARCH_MSM8960
-	default n
-	bool "BAM_DMUX LA1_5"
-	help
-          Support for the LA1.5 Modem device.
-	  Samsung should get rid of this feature after the verification.
-	  Because this feature is for preventing modem crash.
-	  This feature is used in bam_dmux.c
-
 config MACH_MSM8930_CDP
 	depends on ARCH_MSM8930
 	bool "MSM8930 CDP"
@@ -2249,16 +2239,6 @@ config SEC_PERIPHERAL_SECURE_CHK
 	bool "PERIPHERAL SECURE check"
 	help
 	  To check the authentication of peripheral image.
-
-config SEC_L1_DCACHE_PANIC_CHK
-	bool "L1 Dcache Panic check"
-	help
-	  To check the L1 Dcache Panic on MSM8960.
-
-config SEC_SSR_DEBUG_LEVEL_CHK
-	bool "SSR DEBUG LEVEL check"
-	help
-	  To check the level of debug for SSR.
 
 config MSM_DCVS
 	bool "Use MSM DCVS for CPU/GPU Frequency control"

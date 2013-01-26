@@ -151,9 +151,6 @@ static unsigned reset_reason = 0xFFEEFFEE;
 static char sec_build_info[100];
 static unsigned int secdbg_paddr;
 static unsigned int secdbg_size;
-#ifdef CONFIG_SEC_SSR_DEBUG_LEVEL_CHK
-static unsigned enable_cp_debug=1;
-#endif
 
 uint runtime_debug_val;
 
@@ -161,9 +158,6 @@ module_param_named(enable, enable, uint, 0644);
 module_param_named(enable_user, enable_user, uint, 0644);
 module_param_named(reset_reason, reset_reason, uint, 0644);
 module_param_named(runtime_debug_val, runtime_debug_val, uint, 0644);
-#ifdef CONFIG_SEC_SSR_DEBUG_LEVEL_CHK
-module_param_named(enable_cp_debug, enable_cp_debug, uint, 0644);
-#endif
 
 static int force_error(const char *val, struct kernel_param *kp);
 module_param_call(force_error, force_error, NULL, NULL, 0644);
@@ -252,11 +246,6 @@ static int force_error(const char *val, struct kernel_param *kp)
 	} else if (!strncmp(val, "undef", 5)) {
 		pr_emerg("Generating a undefined instruction exception!\n");
 		BUG();
-#ifdef CONFIG_SEC_L1_DCACHE_PANIC_CHK
-	} else if (!strncmp(val, "ldcache", 7)) {
-		pr_emerg("Generating a sec_l1_dcache_check_fail!\n");
-		sec_l1_dcache_check_fail();
-#endif
 	} else if (!strncmp(val, "bushang", 7)) {
 		void __iomem *p;
 		unsigned int val;
@@ -549,25 +538,6 @@ void sec_peripheral_secure_check_fail(void)
 }
 EXPORT_SYMBOL(sec_peripheral_secure_check_fail);
 #endif
-
-
-#ifdef CONFIG_SEC_L1_DCACHE_PANIC_CHK
-void sec_l1_dcache_check_fail(void)
-{
-	sec_debug_set_qc_dload_magic(0);
-	sec_debug_set_upload_magic(0x77665588);
-	pr_emerg("(%s) %s\n", __func__, sec_build_info);
-	pr_emerg("(%s) rebooting...\n", __func__);
-	flush_cache_all();
-	outer_flush_all();
-	arch_reset(0, "l1_dcache_reset");
-
-	while (1)
-		;
-}
-EXPORT_SYMBOL(sec_l1_dcache_check_fail);
-#endif
-
 
 
 #ifdef CONFIG_SEC_DEBUG_LOW_LOG
@@ -914,13 +884,6 @@ int sec_debug_is_enabled(void)
 {
 	return enable;
 }
-
-#ifdef CONFIG_SEC_SSR_DEBUG_LEVEL_CHK
-int sec_debug_is_enabled_for_ssr(void)
-{
-	return enable_cp_debug;
-}
-#endif
 
 /* klaatu - schedule log */
 #ifdef CONFIG_SEC_DEBUG_SCHED_LOG

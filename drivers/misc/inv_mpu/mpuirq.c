@@ -175,8 +175,7 @@ static irqreturn_t mpuirq_handler(int irq, void *dev_id)
 	mpuirq_data.data_type = MPUIRQ_DATA_TYPE_MPU_IRQ;
 	mpuirq_data.data = 0;
 
-	if (!mldl_cfg->inv_mpu_state->use_accel_reactive)
-		wake_up_interruptible(&mpuirq_wait);
+	wake_up_interruptible(&mpuirq_wait);
 	if (mldl_cfg->inv_mpu_state->accel_reactive)
 		schedule_delayed_work(&mpuirq_dev_data.reactive_work,
 		msecs_to_jiffies(20));

@@ -168,8 +168,6 @@ struct sec_bat_info {
 	unsigned long charging_passed_time;
 	unsigned int iterm;
 	unsigned int abs_time;
-	unsigned int normal_abs_time;
-	unsigned int wpc_abs_time;
 	unsigned int rechg_time;
 	unsigned int vrechg;
 	unsigned int vmax;
@@ -752,11 +750,7 @@ static int sec_usb_get_property(struct power_supply *ps,
 		return -EINVAL;
 
 	/* Set enable=1 only if the USB charger is connected */
-	if (info->cable_type == CABLE_TYPE_USB ||
-		info->cable_type == CABLE_TYPE_CDP)
-		val->intval = 1;
-	else
-		val->intval = 0;
+	val->intval = (info->cable_type == CABLE_TYPE_USB);
 
 	return 0;
 }
@@ -1347,7 +1341,6 @@ static void sec_bat_cable_work(struct work_struct *work)
 				if (ret < 0)
 					pr_err("%s : failed to set charger state(%d)\n",
 								__func__, ret);
-				wake_lock_timeout(&info->cable_wake_lock, 2*HZ);
 				queue_delayed_work(info->monitor_wqueue,
 					&info->cable_work,
 					msecs_to_jiffies(500));
@@ -1578,17 +1571,6 @@ static void sec_bat_monitor_work(struct work_struct *work)
 			break;
 		}
 	}
-#ifdef CONFIG_WIRELESS_CHARGING
-	if (info->wpc_abs_time &&
-			(info->cable_type == CABLE_TYPE_WPC)) {
-		info->abs_time = info->wpc_abs_time;
-		pr_debug("[battery] wpc abs time (%d)\n", info->abs_time);
-	} else {
-		info->abs_time = info->normal_abs_time;
-		pr_debug("[battery] normal abs time (%d)\n",
-			info->abs_time);
-	}
-#endif
 	pm8921_enable_batt_therm(0);
 	pr_info("%s: battery check is %s (%d time%c)\n",
 		__func__, info->present ? "present" : "absent",
@@ -1763,7 +1745,6 @@ static void sec_bat_measure_work(struct work_struct *work)
 			}
 
 			local_irq_restore(flags);
-			wake_lock_timeout(&info->cable_wake_lock, 2*HZ);
 			queue_delayed_work(info->monitor_wqueue,
 					   &info->cable_work, HZ);
 		}
@@ -2650,12 +2631,10 @@ static __devinit int sec_bat_probe(struct platform_device *pdev)
 	else
 		info->measure_interval = MEASURE_DSG_INTERVAL;
 
-	if (!pdata->recharge_voltage) {
-		if (pdata->check_batt_type) {
-			if (pdata->check_batt_type()) {
-				pdata->max_voltage = 4350 * 1000;
-				pdata->recharge_voltage = 4280 * 1000;
-			}
+	if (pdata->check_batt_type) {
+		if (pdata->check_batt_type()) {
+			pdata->max_voltage = 4350 * 1000;
+			pdata->recharge_voltage = 4280 * 1000;
 		}
 	}
 
@@ -2678,18 +2657,11 @@ static __devinit int sec_bat_probe(struct platform_device *pdev)
 	if (pdata->charge_duration != 0 &&
 		pdata->recharge_duration != 0) {
 		info->abs_time = pdata->charge_duration;
-		info->normal_abs_time = pdata->charge_duration;
 		info->rechg_time = pdata->recharge_duration;
 	} else {
 		info->abs_time = DEFAULT_CHG_TIME;
-		info->normal_abs_time = DEFAULT_CHG_TIME;
 		info->rechg_time = DEFAULT_RECHG_TIME;
 	}
-
-	if (pdata->wpc_charge_duration != 0)
-		info->wpc_abs_time = pdata->wpc_charge_duration;
-	else
-		info->wpc_abs_time = 0;
 
 	if (pdata->iterm != 0)
 		info->iterm = pdata->iterm;

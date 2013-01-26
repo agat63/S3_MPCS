@@ -864,7 +864,6 @@ static void __devinit quirk_usb_handoff_xhci(struct pci_dev *pdev)
 		if (!ext_cap_offset)
 			/* We've reached the end of the extended capabilities */
 			goto hc_init;
-
 		val = readl(base + ext_cap_offset);
 		if (XHCI_EXT_CAPS_ID(val) == XHCI_EXT_CAPS_LEGACY)
 			break;

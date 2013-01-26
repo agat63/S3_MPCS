@@ -2713,8 +2713,11 @@ static int s5c73m3_get_sensor_fw_version(void)
 		CHECK_ERR(err);
 	}
 
-	if ((s5c73m3_ctrl->sensor_fw[0] >= 'A')
-		&& s5c73m3_ctrl->sensor_fw[0] <= 'Z') {
+	if (s5c73m3_ctrl->sensor_fw[0] == 'Z' ||
+		s5c73m3_ctrl->sensor_fw[0] == 'G' ||
+		s5c73m3_ctrl->sensor_fw[0] == 'S' ||
+		s5c73m3_ctrl->sensor_fw[0] == 'O') {
+
 		cam_err("sensor_fw = %s\n",
 			s5c73m3_ctrl->sensor_fw);
 		return 0;
@@ -3104,8 +3107,10 @@ static int s5c73m3_check_fw(const struct msm_camera_sensor_info *data,
 		else
 			CAM_DBG_M("Loading From PhoneFW......\n");
 
-		if ((s5c73m3_ctrl->phone_fw[0] >= 'A')
-			&& s5c73m3_ctrl->phone_fw[0] <= 'Z') {
+		if (s5c73m3_ctrl->phone_fw[0] == 'Z' ||
+			s5c73m3_ctrl->phone_fw[0] == 'G' ||
+			s5c73m3_ctrl->phone_fw[0] == 'S' ||
+			s5c73m3_ctrl->phone_fw[0] == 'O') {
 			s5c73m3_reset_module(false);
 			err = s5c73m3_SPI_booting();
 			if (err < 0) {
@@ -3169,8 +3174,10 @@ static int s5c73m3_check_fw(const struct msm_camera_sensor_info *data,
 	data->sensor_platform_info->sensor_get_fw(&s5c73m3_ctrl->sensor_fw,
 		&s5c73m3_ctrl->phone_fw);
 
-	if ((s5c73m3_ctrl->phone_fw[0] >= 'A')
-		&& s5c73m3_ctrl->phone_fw[0] <= 'Z') {
+	if (s5c73m3_ctrl->phone_fw[0] == 'Z' ||
+		s5c73m3_ctrl->phone_fw[0] == 'G' ||
+		s5c73m3_ctrl->phone_fw[0] == 'S' ||
+		s5c73m3_ctrl->phone_fw[0] == 'O') {
 		s5c73m3_sensor_reset();
 
 		err = s5c73m3_SPI_booting();
@@ -3275,13 +3282,8 @@ static int s5c73m3_read_vdd_core(void)
 		s5c73m3_ctrl->sensordata->sensor_platform_info
 		->sensor_set_isp_core(1000000);
 	else
-#if defined(CONFIG_MACH_M2_DCM)
-		s5c73m3_ctrl->sensordata->sensor_platform_info
-		->sensor_set_isp_core(1230000);
-#else
 		s5c73m3_ctrl->sensordata->sensor_platform_info
 		->sensor_set_isp_core(1150000);
-#endif
 
 	CAM_DBG_H("X\n");
 

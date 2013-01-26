@@ -1410,13 +1410,6 @@ static void fsa9485_usb_cdp_cb(bool attached)
 	set_cable_status =
 		attached ? CABLE_TYPE_CDP : CABLE_TYPE_NONE;
 
-	if (system_rev >= 0x9) {
-		if (attached) {
-			pr_info("%s set vbus state\n", __func__);
-			msm_otg_set_vbus_state(attached);
-		}
-	}
-
 	for (i = 0; i < 10; i++) {
 		psy = power_supply_get_by_name("battery");
 		if (psy)
@@ -1757,38 +1750,11 @@ static struct sec_bat_platform_data sec_bat_pdata = {
 	.get_cable_type	= msm8960_get_cable_type,
 	.sec_battery_using = is_sec_battery_using,
 	.check_batt_type = check_battery_type,
+	.iterm = 100,
 	.charge_duration = 8 * 60 * 60,
 	.recharge_duration = 2 * 60 * 60,
 	.max_voltage = 4350 * 1000,
-#if defined(_d2mtr_)
-	.iterm = 150,
-	.recharge_voltage = 4300 * 1000,
-#else
-	.iterm = 100,
 	.recharge_voltage = 4280 * 1000,
-#endif
-
-#if defined(_d2usc_)
-	.event_block = 600,
-	.high_block = 600,
-	.high_recovery = 440,
-	.low_block = -50,
-	.low_recovery = -10,
-	.lpm_high_block = 600,
-	.lpm_high_recovery = 440,
-	.lpm_low_block = -40,
-	.lpm_low_recovery = -10,
-#elif defined(_d2mtr_)
-	.event_block = 610,
-	.high_block = 610,
-	.high_recovery = 440,
-	.low_block = -40,
-	.low_recovery = -5,
-	.lpm_high_block = 610,
-	.lpm_high_recovery = 440,
-	.lpm_low_block = -40,
-	.lpm_low_recovery = -5,
-#else /* _d2vzw_ */
 	.event_block = 600,
 	.high_block = 510,
 	.high_recovery = 440,
@@ -1799,7 +1765,6 @@ static struct sec_bat_platform_data sec_bat_pdata = {
 	.lpm_high_recovery = 440,
 	.lpm_low_block = -40,
 	.lpm_low_recovery = -10,
-#endif
 	.wpc_charging_current = 700,
 };
 
@@ -5320,11 +5285,7 @@ static void __init samsung_m2_vzw_init(void)
 
 }
 
-#if defined(_d2usc_)
-MACHINE_START(M2_VZW, "SAMSUNG M2_USC")
-#else
 MACHINE_START(M2_VZW, "SAMSUNG M2_VZW")
-#endif
 	.map_io = msm8960_map_io,
 	.reserve = msm8960_reserve,
 	.init_irq = msm8960_init_irq,

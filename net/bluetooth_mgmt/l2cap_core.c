@@ -393,13 +393,6 @@ static void l2cap_chan_del(struct l2cap_chan *chan, int err)
 
 	BT_DBG("chan %p, conn %p, err %d", chan, conn, err);
 
-	if (chan->mode == L2CAP_MODE_ERTM) {
-		BT_DBG("L2CAP_MODE_ERTM __clear_ack_timer");
-		__clear_ack_timer(chan);
-		__clear_retrans_timer(chan);
-		__clear_monitor_timer(chan);
-	}
-
 	if (conn) {
 		/* Delete from channel list */
 		write_lock_bh(&conn->chan_lock);
@@ -454,6 +447,10 @@ static void l2cap_chan_del(struct l2cap_chan *chan, int err)
 
 	if (chan->mode == L2CAP_MODE_ERTM) {
 		struct srej_list *l, *tmp;
+
+		__clear_retrans_timer(chan);
+		__clear_monitor_timer(chan);
+		__clear_ack_timer(chan);
 
 		skb_queue_purge(&chan->srej_q);
 
@@ -1469,7 +1466,7 @@ static int l2cap_retransmit_frames(struct l2cap_chan *chan)
 	return ret;
 }
 
-static void __l2cap_send_ack(struct l2cap_chan *chan)
+static void l2cap_send_ack(struct l2cap_chan *chan)
 {
 	u16 control = 0;
 
@@ -1487,13 +1484,6 @@ static void __l2cap_send_ack(struct l2cap_chan *chan)
 
 	control |= L2CAP_SUPER_RCV_READY;
 	l2cap_send_sframe(chan, control);
-}
-
-static void l2cap_send_ack(struct l2cap_chan *chan)
-{
-	BT_DBG("l2cap_send_ack");
-	__clear_ack_timer(chan);
-	__l2cap_send_ack(chan);
 }
 
 static void l2cap_send_srejtail(struct l2cap_chan *chan)
@@ -1929,10 +1919,9 @@ static void l2cap_ack_timeout(unsigned long arg)
 {
 	struct l2cap_chan *chan = (void *) arg;
 
-	spin_lock_bh(&((chan->sk)->sk_lock.slock));
-	/* l2cap_send_ack(chan);*/
-	__l2cap_send_ack(chan);
-	spin_unlock_bh(&((chan->sk)->sk_lock.slock));
+	bh_lock_sock(chan->sk);
+	l2cap_send_ack(chan);
+	bh_unlock_sock(chan->sk);
 }
 
 static inline void l2cap_ertm_init(struct l2cap_chan *chan)
@@ -3663,13 +3652,11 @@ expected:
 			l2cap_retransmit_frames(chan);
 	}
 
+	__set_ack_timer(chan);
+
 	chan->num_acked = (chan->num_acked + 1) % num_to_ack;
-	if (chan->num_acked == num_to_ack - 1) {
+	if (chan->num_acked == num_to_ack - 1)
 		l2cap_send_ack(chan);
-	} else {
-		BT_DBG("__set_ack_timer");
-		__set_ack_timer(chan);
-	}
 
 	return 0;
 

@@ -868,11 +868,13 @@ out:
 				page_is_file_cache(page));
 		putback_lru_page(page);
 	}
+
 	/*
 	 * Move the new page to the LRU. If migration was not successful
 	 * then this will free the page.
 	 */
 	putback_lru_page(newpage);
+
 	if (result) {
 		if (rc)
 			*result = rc;

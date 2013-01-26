@@ -1325,7 +1325,6 @@ static int option_probe(struct usb_serial *serial,
 			const struct usb_device_id *id)
 {
 	struct usb_wwan_intf_private *data;
-
 	/* D-Link DWM 652 still exposes CD-Rom emulation interface in modem mode */
 	if (serial->dev->descriptor.idVendor == DLINK_VENDOR_ID &&
 		serial->dev->descriptor.idProduct == DLINK_PRODUCT_DWM_652 &&
@@ -1355,6 +1354,7 @@ static int option_probe(struct usb_serial *serial,
 		return -ENODEV;
 
 	data = serial->private = kzalloc(sizeof(struct usb_wwan_intf_private), GFP_KERNEL);
+
 	if (!data)
 		return -ENOMEM;
 	data->send_setup = option_send_setup;

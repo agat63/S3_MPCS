@@ -1038,31 +1038,6 @@ int inv_mpu_set_firmware(struct mldl_cfg *mldl_cfg, void *mlsl_handle,
 	return INV_SUCCESS;
 }
 
-static int set_fp_mode(struct mldl_cfg *mldl_cfg, void *gyro_handle)
-{
-	unsigned char b;
-	int result = INV_SUCCESS;
-
-	/* Resetting the cycle bit and LPA wake up freq */
-	inv_serial_read(gyro_handle, mldl_cfg->mpu_chip_info->addr,
-		MPUREG_PWR_MGMT_1, 1, &b);
-
-	if (b & BIT_CYCLE) {
-		b &= ~BIT_CYCLE & ~BIT_PD_PTAT;
-		result |= inv_serial_single_write(gyro_handle,
-			mldl_cfg->mpu_chip_info->addr,
-			MPUREG_PWR_MGMT_1, b);
-		inv_serial_read(gyro_handle, mldl_cfg->mpu_chip_info->addr,
-			MPUREG_PWR_MGMT_2, 1, &b);
-		b &= ~BITS_LPA_WAKE_CTRL;
-		result |= inv_serial_single_write(gyro_handle,
-			mldl_cfg->mpu_chip_info->addr,
-			MPUREG_PWR_MGMT_2, b);
-	}
-
-	return result;
-}
-
 static int gyro_resume(struct mldl_cfg *mldl_cfg, void *gyro_handle,
 		       unsigned long sensors)
 {
@@ -1071,11 +1046,6 @@ static int gyro_resume(struct mldl_cfg *mldl_cfg, void *gyro_handle,
 	unsigned char reg;
 	unsigned char regs[7];
 	unsigned char int_cfg = mldl_cfg->mpu_gyro_cfg->int_config;
-
-	result = set_fp_mode(mldl_cfg, gyro_handle);
-	if (result)
-		LOG_RESULT_LOCATION(result);
-
 	/* Wake up the part */
 	result = mpu60xx_pwr_mgmt(mldl_cfg, gyro_handle, false, sensors);
 	if (result) {
@@ -1423,7 +1393,6 @@ int inv_mpu_open(struct mldl_cfg *mldl_cfg,
 		MPU_DEVICE_IS_SUSPENDED;
 	mldl_cfg->inv_mpu_state->i2c_slaves_enabled = 0;
 	mldl_cfg->inv_mpu_state->accel_reactive = false;
-	mldl_cfg->inv_mpu_state->use_accel_reactive = false;
 
 	slave_handle[EXT_SLAVE_TYPE_GYROSCOPE] = gyro_handle;
 	slave_handle[EXT_SLAVE_TYPE_ACCEL] = accel_handle;

@@ -28,9 +28,9 @@ export LC_ALL
 
 if [ -z "$KBUILD_BUILD_VERSION" ]; then
 	if [ -r .version ]; then
-		VERSION=v0.2.0
+		VERSION=v0.2.1
 	else
-		VERSION=v0.2.0
+		VERSION=v0.2.1
 	fi
 else
 	VERSION=$KBUILD_BUILD_VERSION
@@ -72,8 +72,8 @@ UTS_TRUNCATE="cut -b -$UTS_LEN"
 
   echo \#define UTS_VERSION \"`echo $UTS_VERSION | $UTS_TRUNCATE`\"
 
-  echo \#define LINUX_COMPILE_BY \"AGAT_S3_MPCS\"
-  echo \#define LINUX_COMPILE_HOST \"\"
+  echo \#define LINUX_COMPILE_BY \"AGAT_LI03_Kernel\"
+  echo \#define LINUX_COMPILE_HOST \" \"
 
   echo \#define LINUX_COMPILER \"`$CC -v 2>&1 | tail -n 1`\"
 ) > .tmpcompile

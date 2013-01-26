@@ -32,7 +32,6 @@ extern int sec_debug_init(void);
 extern int sec_debug_dump_stack(void);
 extern void sec_debug_hw_reset(void);
 extern void sec_peripheral_secure_check_fail(void);
-extern void sec_l1_dcache_check_fail(void);
 extern void sec_debug_check_crash_key(unsigned int code, int value);
 extern void sec_getlog_supply_fbinfo(void *p_fb, u32 res_x, u32 res_y, u32 bpp,
 		u32 frames);
@@ -45,7 +44,6 @@ extern void sec_getlog_supply_kloginfo(void *klog_buf);
 extern void sec_gaf_supply_rqinfo(unsigned short curr_offset,
 				  unsigned short rq_offset);
 extern int sec_debug_is_enabled(void);
-extern int sec_debug_is_enabled_for_ssr(void);
 #else
 static inline int sec_debug_init(void)
 {
@@ -493,7 +491,7 @@ extern void sec_debug_subsys_set_kloginfo(unsigned int *idx_paddr,
 	unsigned int *log_paddr, unsigned int *size);
 int sec_debug_save_die_info(const char *str, struct pt_regs *regs);
 int sec_debug_save_panic_info(const char *str, unsigned int caller);
-extern void set_pc_debug_val(unsigned int cpu, int val);
+
 extern void sec_debug_set_qc_dload_magic(int on);
 extern uint32_t global_pvs;
 #endif

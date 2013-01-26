@@ -458,11 +458,7 @@ int subsystem_restart(const char *subsys_name)
 	}
 
 #ifdef CONFIG_SEC_DEBUG
-#ifdef CONFIG_SEC_SSR_DEBUG_LEVEL_CHK
-	if (!sec_debug_is_enabled_for_ssr())
-#else
 	if (!sec_debug_is_enabled())
-#endif
 		restart_level = RESET_SUBSYS_INDEPENDENT;
 	else
 		restart_level = RESET_SOC;
@@ -635,11 +631,7 @@ static int __init subsys_restart_init(void)
 	int ret = 0;
 
 #ifdef CONFIG_SEC_DEBUG
-#ifdef CONFIG_SEC_SSR_DEBUG_LEVEL_CHK
-	if (!sec_debug_is_enabled_for_ssr())
-#else
 	if (!sec_debug_is_enabled())
-#endif
 		restart_level = RESET_SUBSYS_INDEPENDENT;
 	else
 		restart_level = RESET_SOC;

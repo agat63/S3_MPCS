@@ -2390,15 +2390,10 @@ dhd_wlfc_cleanup(dhd_pub_t *dhd)
 		dhd->wlfc_state;
 	wlfc_mac_descriptor_t* table;
 	wlfc_hanger_t* h;
-	int prec;
-	void *pkt = NULL;
-	struct pktq *txq = NULL;
+
 	if (dhd->wlfc_state == NULL)
 		return;
-	/* flush bus->txq */
-	txq = dhd_bus_txq(dhd->bus);
-	/* any in the hanger? */
-	h = (wlfc_hanger_t *)wlfc->hanger;
+
 	total_entries = sizeof(wlfc->destination_entries)/sizeof(wlfc_mac_descriptor_t);
 	/* search all entries, include nodes as well as interfaces */
 	table = (wlfc_mac_descriptor_t*)&wlfc->destination_entries;
@@ -2417,26 +2412,8 @@ dhd_wlfc_cleanup(dhd_pub_t *dhd)
 	/* release packets held in SENDQ */
 	if (wlfc->SENDQ.len)
 		pktq_flush(wlfc->osh, &wlfc->SENDQ, TRUE, NULL, 0);
-	for (prec = 0; prec < txq->num_prec; prec++) {
-		pkt = pktq_pdeq(txq, prec);
-		while (pkt) {
-			for (i = 0; i < h->max_items; i++) {
-				if (pkt == h->items[i].pkt) {
-					if (h->items[i].state == WLFC_HANGER_ITEM_STATE_INUSE) {
-						PKTFREE(wlfc->osh, h->items[i].pkt, TRUE);
-						h->items[i].state = WLFC_HANGER_ITEM_STATE_FREE;
-					} else if (h->items[i].state ==
-						WLFC_HANGER_ITEM_STATE_INUSE_SUPPRESSED) {
-						/* These are already freed from the psq */
-						h->items[i].state = WLFC_HANGER_ITEM_STATE_FREE;
-					}
-					break;
-				}
-			}
-			pkt = pktq_pdeq(txq, prec);
-		}
-	}
-	/* flush remained pkt in hanger queue, not in bus->txq */
+	/* any in the hanger? */
+	h = (wlfc_hanger_t*)wlfc->hanger;
 	for (i = 0; i < h->max_items; i++) {
 		if (h->items[i].state == WLFC_HANGER_ITEM_STATE_INUSE) {
 			PKTFREE(wlfc->osh, h->items[i].pkt, TRUE);

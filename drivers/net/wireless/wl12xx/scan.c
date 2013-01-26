@@ -83,6 +83,7 @@ static int wl1271_get_scan_channels(struct wl1271 *wl,
 	for (i = 0, j = 0;
 	     i < req->n_channels && j < WL1271_SCAN_MAX_CHANNELS;
 	     i++) {
+
 		flags = req->channels[i]->flags;
 
 		if (!test_bit(i, wl->scan.scanned_ch) &&
